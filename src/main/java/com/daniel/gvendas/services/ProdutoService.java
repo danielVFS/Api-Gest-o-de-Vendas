@@ -22,4 +22,8 @@ public class ProdutoService {
 	public Optional<Produto> findById(Long id, Long codigoCategoria) {
 		return produtoRepository.findByCodigo(id, codigoCategoria);
 	}
+	
+	public Produto create(Produto produto) {
+		return produtoRepository.save(produto);
+	}
 }
