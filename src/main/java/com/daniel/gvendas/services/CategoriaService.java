@@ -36,8 +36,8 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Long id, Categoria categoria) {
-		Categoria newCategory = categoriaExists(id);
-		validateDuplicatedCategory(newCategory);
+		Categoria newCategory = categoriaExists(id); 
+		validateDuplicatedCategory(categoria);
 
 		BeanUtils.copyProperties(categoria, newCategory, "codigo");
 
