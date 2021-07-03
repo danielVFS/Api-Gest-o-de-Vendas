@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.daniel.gvendas.entities.Categoria;
 import com.daniel.gvendas.services.CategoriaService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "Categoria")
 @RestController
 @RequestMapping("/categoria")
 public class CategoriaController {
@@ -26,11 +30,13 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService categoriaService;
 	
+	@ApiOperation(value = "Lista todas categorias")
 	@GetMapping
 	public List<Categoria> listAll() {
 		return categoriaService.listAll();
 	}
 	
+	@ApiOperation(value = "Lista uma categoria por ID")
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long id) {
 		Optional<Categoria> categoria = categoriaService.findById(id);
@@ -38,6 +44,7 @@ public class CategoriaController {
 		return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
 	}
 	
+	@ApiOperation(value = "Cria uma categoria")
 	@PostMapping
 	public ResponseEntity<Categoria> create(@Valid @RequestBody Categoria categoria) {
 		Categoria newCategoria = categoriaService.create(categoria);
@@ -45,6 +52,7 @@ public class CategoriaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(newCategoria);
 	}
 	
+	@ApiOperation(value = "Atualiza uma categoria")
 	@PutMapping("/{id}")
 	public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
 		Categoria newCategoria = categoriaService.update(id, categoria);
