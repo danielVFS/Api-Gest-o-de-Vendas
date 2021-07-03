@@ -38,6 +38,16 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 		
 		List<Error> errors = Arrays.asList(new Error(msgUsuario, msgDev));
 		
+		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler(BusinessRulesException.class)
+	public ResponseEntity<Object> handleBusinessRulesException(BusinessRulesException ex, WebRequest request) {
+		String msgUsuario = ex.getMessage();
+		String msgDev = ex.getMessage();	
+		
+		List<Error> errors = Arrays.asList(new Error(msgUsuario, msgDev));
+		
 		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
