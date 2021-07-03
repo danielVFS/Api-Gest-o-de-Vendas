@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "produto")
-public class Product {
+public class Produto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -106,10 +106,10 @@ public class Product {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof Product)) {
+		if (!(obj instanceof Produto)) {
 			return false;
 		}
-		Product other = (Product) obj;
+		Produto other = (Produto) obj;
 		return Objects.equals(categoria, other.categoria) && Objects.equals(codigo, other.codigo)
 				&& Objects.equals(descricao, other.descricao) && Objects.equals(observacao, other.observacao)
 				&& Objects.equals(precoCusto, other.precoCusto) && Objects.equals(precoVenda, other.precoVenda)
