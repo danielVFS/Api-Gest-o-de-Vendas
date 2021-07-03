@@ -29,6 +29,10 @@ public class CategoriaService {
 		return categoriaRepository.save(categoria);
 	}
 	
+	public void delete(Long id) {
+		categoriaRepository.deleteById(id);
+	}
+	
 	public Categoria update(Long id, Categoria categoria) {
 		Categoria newCategory = categoriaExists(id);
 		
