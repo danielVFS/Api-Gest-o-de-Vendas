@@ -3,6 +3,8 @@ package com.daniel.gvendas.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +45,7 @@ public class ProdutoController {
 	
 	@ApiOperation(value = "Criar um Produto")
 	@PostMapping
-	public ResponseEntity<Produto> create(@RequestBody Produto produto) {
+	public ResponseEntity<Produto> create(@Valid @RequestBody Produto produto) {
 		Produto newProduto = produtoService.create(produto);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(newProduto);
