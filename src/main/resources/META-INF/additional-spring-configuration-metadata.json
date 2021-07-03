@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "opentracing.jaeger.sampler-type",
+    "type": "java.lang.String",
+    "description": "A description for 'opentracing.jaeger.sampler-type'"
+  },
+  {
+    "name": "opentracing.jaeger.sampler-param",
+    "type": "java.lang.String",
+    "description": "A description for 'opentracing.jaeger.sampler-param'"
+  }
+]}
