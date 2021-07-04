@@ -2,6 +2,7 @@ package com.daniel.gvendas.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.daniel.gvendas.dto.CategoriaResponseDTO;
 import com.daniel.gvendas.entities.Categoria;
 import com.daniel.gvendas.services.CategoriaService;
 
@@ -28,44 +30,45 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/categoria")
 public class CategoriaController {
-	
+
 	@Autowired
 	private CategoriaService categoriaService;
-	
+
 	@ApiOperation(value = "Lista todas categorias")
 	@GetMapping
-	public List<Categoria> listAll() {
-		return categoriaService.listAll();
+	public List<CategoriaResponseDTO> listAll() {
+		return categoriaService.listAll().stream().map(cat -> CategoriaResponseDTO.convertToCategoriaDTO(cat))
+				.collect(Collectors.toList());
 	}
-	
+
 	@ApiOperation(value = "Lista uma categoria por ID")
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long id) {
+	public ResponseEntity<CategoriaResponseDTO> findById(@PathVariable Long id) {
 		Optional<Categoria> categoria = categoriaService.findById(id);
 		
-		return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
+		return categoria.isPresent() ? ResponseEntity.ok(CategoriaResponseDTO.convertToCategoriaDTO(categoria.get())) : ResponseEntity.notFound().build();
 	}
-	
+
 	@ApiOperation(value = "Cria uma categoria")
 	@PostMapping
 	public ResponseEntity<Categoria> create(@Valid @RequestBody Categoria categoria) {
 		Categoria newCategoria = categoriaService.create(categoria);
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(newCategoria);
 	}
-	
+
 	@ApiOperation(value = "Atualiza uma categoria")
 	@PutMapping("/{id}")
 	public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
 		Categoria newCategoria = categoriaService.update(id, categoria);
-		
+
 		return ResponseEntity.ok(newCategoria);
 	}
-	
+
 	@ApiOperation(value = "Deleta uma categoria")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
-		categoriaService.delete(id);		
+		categoriaService.delete(id);
 	}
 }
