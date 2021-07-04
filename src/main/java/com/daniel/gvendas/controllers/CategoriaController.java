@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.daniel.gvendas.dto.CategoriaRequestDTO;
 import com.daniel.gvendas.dto.CategoriaResponseDTO;
 import com.daniel.gvendas.entities.Categoria;
 import com.daniel.gvendas.services.CategoriaService;
@@ -45,22 +46,23 @@ public class CategoriaController {
 	@GetMapping("/{id}")
 	public ResponseEntity<CategoriaResponseDTO> findById(@PathVariable Long id) {
 		Optional<Categoria> categoria = categoriaService.findById(id);
-		
-		return categoria.isPresent() ? ResponseEntity.ok(CategoriaResponseDTO.convertToCategoriaDTO(categoria.get())) : ResponseEntity.notFound().build();
+
+		return categoria.isPresent() ? ResponseEntity.ok(CategoriaResponseDTO.convertToCategoriaDTO(categoria.get()))
+				: ResponseEntity.notFound().build();
 	}
 
 	@ApiOperation(value = "Cria uma categoria")
 	@PostMapping
-	public ResponseEntity<Categoria> create(@Valid @RequestBody Categoria categoria) {
-		Categoria newCategoria = categoriaService.create(categoria);
+	public ResponseEntity<CategoriaResponseDTO> create(@Valid @RequestBody CategoriaRequestDTO categoriaDto) {
+		Categoria newCategoria = categoriaService.create(categoriaDto.convertToEntity());
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(newCategoria);
+		return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaResponseDTO.convertToCategoriaDTO(newCategoria));
 	}
 
 	@ApiOperation(value = "Atualiza uma categoria")
 	@PutMapping("/{id}")
-	public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
-		Categoria newCategoria = categoriaService.update(id, categoria);
+	public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody CategoriaRequestDTO categoriaDto) {
+		Categoria newCategoria = categoriaService.update(id, categoriaDto.convertToEntity(id));
 
 		return ResponseEntity.ok(newCategoria);
 	}
