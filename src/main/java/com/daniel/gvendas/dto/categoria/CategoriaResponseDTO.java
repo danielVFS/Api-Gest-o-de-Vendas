@@ -1,4 +1,4 @@
-package com.daniel.gvendas.dto;
+package com.daniel.gvendas.dto.categoria;
 
 import com.daniel.gvendas.entities.Categoria;
 

@@ -2,6 +2,7 @@ package com.daniel.gvendas.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.daniel.gvendas.dto.produto.ProdutoResponseDTO;
 import com.daniel.gvendas.entities.Produto;
 import com.daniel.gvendas.services.ProdutoService;
 
@@ -34,16 +36,18 @@ public class ProdutoController {
 
 	@ApiOperation(value = "Lista todos Produtos")
 	@GetMapping
-	public List<Produto> findAll(@PathVariable Long codigoCategoria) {
-		return produtoService.findAllByCategory(codigoCategoria);
+	public List<ProdutoResponseDTO> findAll(@PathVariable Long codigoCategoria) {
+		return produtoService.findAllByCategory(codigoCategoria).stream()
+				.map(prod -> ProdutoResponseDTO.convertToProdutoDTO(prod)).collect(Collectors.toList());
 	}
 
 	@ApiOperation(value = "Lista um Produto por ID")
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Produto>> findById(@PathVariable Long codigoCategoria, @PathVariable Long id) {
+	public ResponseEntity<ProdutoResponseDTO> findById(@PathVariable Long codigoCategoria, @PathVariable Long id) {
 		Optional<Produto> produto = produtoService.findById(id, codigoCategoria);
 
-		return produto.isPresent() ? ResponseEntity.ok(produto) : ResponseEntity.notFound().build();
+		return produto.isPresent() ? ResponseEntity.ok(ProdutoResponseDTO.convertToProdutoDTO(produto.get()))
+				: ResponseEntity.notFound().build();
 	}
 
 	@ApiOperation(value = "Cria um Produto")
@@ -61,7 +65,7 @@ public class ProdutoController {
 
 		return ResponseEntity.ok(produtoService.update(codigoCategoria, codigoProduto, produto));
 	}
-	
+
 	@ApiOperation(value = "Deleta um Produto")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{codigoProduto}")

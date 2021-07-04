@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.daniel.gvendas.dto.CategoriaRequestDTO;
-import com.daniel.gvendas.dto.CategoriaResponseDTO;
+import com.daniel.gvendas.dto.categoria.CategoriaRequestDTO;
+import com.daniel.gvendas.dto.categoria.CategoriaResponseDTO;
 import com.daniel.gvendas.entities.Categoria;
 import com.daniel.gvendas.services.CategoriaService;
 
