@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.daniel.gvendas.dto.produto.ProdutoRequestDTO;
 import com.daniel.gvendas.dto.produto.ProdutoResponseDTO;
 import com.daniel.gvendas.entities.Produto;
 import com.daniel.gvendas.services.ProdutoService;
@@ -52,18 +53,21 @@ public class ProdutoController {
 
 	@ApiOperation(value = "Cria um Produto")
 	@PostMapping
-	public ResponseEntity<Produto> create(@PathVariable Long codigoCategoria, @Valid @RequestBody Produto produto) {
-		Produto newProduto = produtoService.create(codigoCategoria, produto);
+	public ResponseEntity<ProdutoResponseDTO> create(@PathVariable Long codigoCategoria,
+			@Valid @RequestBody ProdutoRequestDTO produto) {
+		Produto newProduto = produtoService.create(codigoCategoria, produto.convertToEntity(codigoCategoria));
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(newProduto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(ProdutoResponseDTO.convertToProdutoDTO(newProduto));
 	}
 
 	@ApiOperation(value = "Atualiza um Produto")
 	@PutMapping("/{codigoProduto}")
-	public ResponseEntity<Produto> update(@PathVariable Long codigoCategoria, @PathVariable Long codigoProduto,
-			@Valid @RequestBody Produto produto) {
+	public ResponseEntity<ProdutoResponseDTO> update(@PathVariable Long codigoCategoria, @PathVariable Long codigoProduto,
+			@Valid @RequestBody ProdutoRequestDTO produto) {
+		
+		Produto updatedProduto = produtoService.update(codigoCategoria, codigoProduto, produto.convertToEntity(codigoCategoria, codigoProduto));
 
-		return ResponseEntity.ok(produtoService.update(codigoCategoria, codigoProduto, produto));
+		return ResponseEntity.ok(ProdutoResponseDTO.convertToProdutoDTO(updatedProduto));
 	}
 
 	@ApiOperation(value = "Deleta um Produto")
