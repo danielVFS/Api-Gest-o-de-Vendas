@@ -28,7 +28,7 @@ public class ProdutoService {
 	public Optional<Produto> findById(Long id, Long codigoCategoria) {
 		return produtoRepository.findByCodigo(id, codigoCategoria);
 	}
-
+	
 	public Produto create(Long codigoCategoria, Produto produto) {
 		validateExistingCategoriaProduto(codigoCategoria);
 		validateDuplicatedProduto(produto);
@@ -45,6 +45,12 @@ public class ProdutoService {
 		BeanUtils.copyProperties(produto, saveProduto, "codigo");
 
 		return produtoRepository.save(saveProduto);
+	}
+	
+	public void delete(Long codigoCategoria, Long codigoProduto) {
+		Produto produto = validateExistingProduto(codigoCategoria, codigoProduto);
+		
+		produtoRepository.delete(produto);
 	}
 
 	private Produto validateExistingProduto(Long codigoCategoria, Long codigoProduto) {
