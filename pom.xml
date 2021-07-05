@@ -16,6 +16,7 @@
 	<description>Api de gestão de vendas com spring boot e docker</description>
 	<properties>
 		<java.version>11</java.version>
+		<micrometer.version>1.7.1</micrometer.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -58,6 +59,14 @@
 			<groupId>io.opentracing.contrib</groupId>
 			<artifactId>opentracing-jdbc</artifactId>
 			<version>0.2.12</version>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
 		<dependency>
