@@ -6,4 +6,5 @@ import com.daniel.gvendas.entities.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 
+	Cliente findByNome(String nome);
 }
