@@ -2,6 +2,7 @@ package com.daniel.gvendas.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.daniel.gvendas.dto.cliente.ClienteResponseDTO;
 import com.daniel.gvendas.entities.Cliente;
 import com.daniel.gvendas.services.ClienteService;
 
@@ -23,18 +25,19 @@ public class ClienteController {
 
 	@Autowired
 	private ClienteService clienteService;
-	
+
 	@ApiOperation(value = "Lista todas clientes")
 	@GetMapping
-	public List<Cliente> findAll() {
-		return clienteService.listAll();
+	public List<ClienteResponseDTO> findAll() {
+		return clienteService.listAll().stream().map(cliente -> ClienteResponseDTO.convertToClienteDTO(cliente))
+				.collect(Collectors.toList());
 	}
-	
+
 	@ApiOperation(value = "Lista um cliente por id")
 	@GetMapping("/{id}")
-	public ResponseEntity<Cliente> findById(@PathVariable Long id) {
+	public ResponseEntity<ClienteResponseDTO> findById(@PathVariable Long id) {
 		Optional<Cliente> cliente = clienteService.findById(id);
-		
-		return cliente.isPresent() ? ResponseEntity.ok(cliente.get()) : ResponseEntity.notFound().build();
+
+		return cliente.isPresent() ? ResponseEntity.ok(ClienteResponseDTO.convertToClienteDTO(cliente.get())) : ResponseEntity.notFound().build();
 	}
 }
