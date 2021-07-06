@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -52,10 +53,18 @@ public class ClienteController {
 
 	@ApiOperation(value = "Cria um cliente")
 	@PostMapping
-	public ResponseEntity<Cliente> create(@Valid @RequestBody ClienteRequestDTO clienteDTO) {
+	public ResponseEntity<ClienteResponseDTO> create(@Valid @RequestBody ClienteRequestDTO clienteDTO) {
 		Cliente newCliente = clienteService.create(clienteDTO.convertToEntity());
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(newCliente);
+		return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponseDTO.convertToClienteDTO(newCliente));
+	}
+	
+	@ApiOperation(value = "Cria um cliente")
+	@PutMapping("/{id}")
+	public ResponseEntity<ClienteResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ClienteRequestDTO clienteDTO) {
+		Cliente updatedCliente = clienteService.update(id, clienteDTO.convertToEntity(id));
+
+		return ResponseEntity.ok(ClienteResponseDTO.convertToClienteDTO(updatedCliente));
 	}
 	
 	@ApiOperation(value = "Deleta um cliente")

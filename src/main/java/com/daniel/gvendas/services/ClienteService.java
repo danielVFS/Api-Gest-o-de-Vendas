@@ -3,7 +3,9 @@ package com.daniel.gvendas.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.daniel.gvendas.entities.Cliente;
@@ -31,6 +33,25 @@ public class ClienteService {
 	
 	public void delete(Long id) {
 		clienteRepository.deleteById(id);
+	}
+	
+	public Cliente update(Long id, Cliente cliente) {
+		Cliente updateCliente = validateExistingCliente(id);
+		validateDuplicatedCliente(cliente);
+		
+		BeanUtils.copyProperties(cliente, updateCliente, "codigo");
+		
+		return clienteRepository.save(updateCliente);
+	}
+	
+	private Cliente validateExistingCliente(Long id) {
+		Optional<Cliente> cliente = findById(id);
+		
+		if(cliente.isEmpty()) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		
+		return cliente.get();
 	}
 
 	private void validateDuplicatedCliente(Cliente cliente) {

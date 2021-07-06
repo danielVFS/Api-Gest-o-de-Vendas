@@ -21,7 +21,7 @@ public class ClienteResponseDTO {
 	private Boolean ativo;
 
 	@ApiModelProperty(value = "Endereço")
-	private EnderecoResponseDTO endereco;
+	private EnderecoResponseDTO enderecoDto;
 
 	public ClienteResponseDTO() {
 	}
@@ -78,12 +78,12 @@ public class ClienteResponseDTO {
 		this.ativo = ativo;
 	}
 
-	public EnderecoResponseDTO getEndereco() {
-		return endereco;
+	public EnderecoResponseDTO getEnderecoDto() {
+		return enderecoDto;
 	}
 
-	public void setEndereco(EnderecoResponseDTO enderecoDTO) {
-		this.endereco = enderecoDTO;
+	public void setEnderecoDto(EnderecoResponseDTO enderecoDTO) {
+		this.enderecoDto = enderecoDTO;
 	}
 
 }
