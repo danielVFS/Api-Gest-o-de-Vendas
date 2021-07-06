@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.daniel.gvendas.dto.cliente.ClienteRequestDTO;
 import com.daniel.gvendas.dto.cliente.ClienteResponseDTO;
 import com.daniel.gvendas.entities.Cliente;
 import com.daniel.gvendas.services.ClienteService;
@@ -47,8 +48,8 @@ public class ClienteController {
 
 	@ApiOperation(value = "Cria um cliente")
 	@PostMapping
-	public ResponseEntity<Cliente> create(@RequestBody Cliente cliente) {
-		Cliente newCliente = clienteService.create(cliente);
+	public ResponseEntity<Cliente> create(@RequestBody ClienteRequestDTO clienteDTO) {
+		Cliente newCliente = clienteService.create(clienteDTO.convertToEntity());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(newCliente);
 	}
