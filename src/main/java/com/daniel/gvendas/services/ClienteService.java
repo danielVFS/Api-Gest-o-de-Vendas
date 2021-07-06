@@ -28,6 +28,10 @@ public class ClienteService {
 		validateDuplicatedCliente(cliente);
 		return clienteRepository.save(cliente);
 	}
+	
+	public void delete(Long id) {
+		clienteRepository.deleteById(id);
+	}
 
 	private void validateDuplicatedCliente(Cliente cliente) {
 		Cliente clienteByNome = clienteRepository.findByNome(cliente.getNome());
